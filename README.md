@@ -87,7 +87,8 @@ The main function of the script, which sets the directory to be scanned and proc
 
 ```python
 def main():
-    directory = "D:\\"
+    # Replace 'path_to_your_directory' with the actual directory path you want to scan
+    directory = "path_to_your_directory"
     fileHashes = process_directory(directory)
     for hash, path in fileHashes.items():
         print(f"Hash: {hash}, File: {path}")
@@ -103,6 +104,8 @@ if __name__ == "__main__":
     ```python
     directory = "path_to_your_directory"
     ```
+
+    **Note**: Make sure to replace `"path_to_your_directory"` with the actual path to the directory on your system that you want to scan.
 
 2. **Run the Script**: Execute the script in your Python environment.
 
