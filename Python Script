@@ -1,0 +1,61 @@
+#FILE HASHING
+
+# Import the 'os' module, which provides functions for interacting with the operating system
+import os
+# Import the 'hashlib' module, which contains functions for secure hash and message digest
+import hashlib
+
+# Define a function to calculate the MD5 hash of a file
+def calculate_md5(file_path):
+    # Create a new md5 hash object from hashlib
+    hasher = hashlib.md5()
+    try:
+        # Open the file located at 'file_path' in binary read mode ('rb')
+        with open(file_path, 'rb') as file:
+            # Read the entire content of the file into memory
+            buf = file.read()
+            # Feed the file content into the hasher to compute the hash
+            hasher.update(buf)
+        # Return the computed hash as a string of hexadecimal digits
+        return hasher.hexdigest()
+    # Catch exceptions if the file can't be opened or read (e.g., permission issues or file not found)
+    except (PermissionError, IOError):
+        # Print an error message indicating the file that couldn't be read
+        print(f"Could not read file: {file_path}")
+        # Return None to indicate that the hash couldn't be calculated
+        return None
+
+# Define a function to process all files in a directory and calculate their MD5 hashes
+def process_directory(directory):
+    # Create an empty dictionary to store the MD5 hash (key) and corresponding file path (value)
+    fileHashes = {}
+    # Use os.walk to iterate over each directory and file in the specified 'directory'
+    for root, dirs, files in os.walk(directory):
+        # Iterate through every file in the current 'root' directory
+        for fileName in files:
+            # Join the directory path 'root' and 'fileName' to get the full path of the file
+            fullPath = os.path.join(os.path.abspath(root), fileName)
+            # Calculate the MD5 hash of the file using the calculate_md5 function
+            file_hash = calculate_md5(fullPath)
+            # Check if the hash was successfully calculated
+            if file_hash:
+                # Add the hash and file path to the fileHashes dictionary
+                fileHashes[file_hash] = fullPath
+    # Return the dictionary containing all file hashes and their paths
+    return fileHashes
+
+# Define the main function that will be the entry point of the script
+def main():
+    # Define the path of the directory to be scanned
+    directory = "D:\\"
+    # Call process_directory function to process the files in the specified directory
+    fileHashes = process_directory(directory)
+    # Iterate over the items in fileHashes dictionary
+    for hash, path in fileHashes.items():
+        # Print the hash and the corresponding file path for each item
+        print(f"Hash: {hash}, File: {path}")
+
+# Check if this script is being run as the main program (not imported as a module)
+if __name__ == "__main__":
+    # If this script is executed (not imported), call the main function
+    main()
